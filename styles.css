@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap');
+
+/* Global styles */
+:root {
+    --element-background-color: white;
+    --navbar-height: 70px;
+    --default-spacing: 10px;
+    --link-color: #3d54c8;
+    --grey-text: #424242;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color:  #E5E5E5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: var(--link-color);
+}
+
+h1, h2 {
+    font-family: 'Comfortaa', cursive;
+    font-weight: 400;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    max-width: 8em;
+}
+/* End Global Styles */
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--element-background-color);
+    height: var(--navbar-height);
+}
+
+#nav-logo a {
+    font-weight: 600;
+    color: black;
+}
+
+nav > * {
+    padding: calc(var(--default-spacing) * 2);
+}
+
+nav div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav div > * {
+    padding: var(--default-spacing);
+}
+
+nav div a {
+    color: var(--link-color);
+}
+/* End Navbar */
+
+/* Recommendations Panel */
+#recommendations-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: var(--navbar-height);
+    left: 60vw;
+    max-width: 400px;
+    margin: var(--default-spacing);
+}
+
+.current-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.current-user > * {
+    padding: var(--default-spacing);
+}
+
+.current-user h2 {
+    font-size: 2em;
+}
+
+.suggestions-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestions-container h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--grey-text);
+    font-weight: bold;
+    margin: var(--default-spacing);
+}
+
+.suggestion-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.suggestion-card > * {
+    padding: var(--default-spacing);
+}
+
+.suggestion-card img {
+    width: 4em;
+}
+
+.suggestion-card .username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.suggestion-card .subtext {
+    margin-top: 0;
+    color: var(--grey-text);
+}
+/* End Recommendations Panel */
+
+/* Main Content Area */
+main {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    margin: calc(var(--default-spacing) * 2);
+    margin-top: var(--navbar-height);
+}
+
+.content-card-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: var(--default-spacing);
+}
+
+/* Stories Panel */
+.stories-panel {
+    display: flex;
+    align-items: center;
+    margin-top: var(--default-spacing);
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--element-background-color);
+    overflow: clip;
+}
+
+.stories-panel img {
+    max-width: 4em;
+}
+
+.story-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--default-spacing);
+    margin-top: var(--default-spacing);
+    min-width: 80px;
+}
+
+.story-card > p {
+    margin: var(--default-spacing);
+}
+/* End Stoires Panel */
+
+/* Cards */
+.content-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--element-background-color);
+    margin-top: var(--default-spacing);
+    margin: var(--default-spacing);
+    width: 100%;
+    max-width: 800px;
+}
+
+.content-card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-card header > * {
+    margin: calc(var(--default-spacing) * 2);
+}
+
+.content-card h1 {
+    font-weight: 600;
+}
+
+.content-card img {
+    width: 100%;
+}
+
+.content-card .interactions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-card .interactions > * {
+    margin-top: var(--default-spacing);
+}
+
+.interactions i {
+    padding: var(--default-spacing);
+}
+
+.likes {
+    font-weight: bold;
+    padding-left: var(--default-spacing);
+    margin: 0;
+}
+
+.caption {
+    display: flex;
+    align-items: baseline;
+    margin: 0;
+}
+
+.caption > * {
+    padding-left: var(--default-spacing);
+    margin: 0;
+}
+
+.caption .username {
+    font-weight: bold;
+}
+
+.caption a {
+    color: var(--link-color);
+    padding-left: var(--default-spacing);
+    padding-right: var(--default-spacing);
+}
+
+.caption p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+.comment-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment {
+    display: flex;
+    margin: 0;
+}
+
+.comment p {
+    padding-top: 5px;
+    padding-left: var(--default-spacing);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment .username {
+    font-weight: bold;
+}
+
+.date {
+    color: var(--grey-text);
+    margin: 0;
+    padding: var(--default-spacing);
+}
+
+.add-comment-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-comment-area > * {
+    padding: var(--default-spacing);
+}
+
+.add-comment-area a {
+    font-size: 1.1em;
+    margin-right: var(--default-spacing);
+}
+
+.write-comment {
+    display: flex;
+    align-items: center;
+    width: 100%;    
+}
+
+.write-comment > * {
+    padding: var(--default-spacing);
+}
+
+.comment-input {
+    width: 100%;
+}
+/* End Cards */
+/* End Main Content Area */
+
+/* Media Queries */
+@media (max-width: 850px) {
+    #recommendations-panel {
+        display: none;
+    }
+
+    main {
+        width: auto;
+        margin: var(--default-spacing);
+        margin-top: calc(var(--navbar-height) - var(--default-spacing));
+    }
+}
