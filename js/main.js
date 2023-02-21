@@ -22,9 +22,20 @@ const showStories = async (token) => {
             'Authorization': 'Bearer ' + token
         }
     });
+
     const data = await response.json();
     console.log('Stories:', data);
-    // TODO
+
+    for (const story of data) {
+        const html = `
+            <div class="story-card">
+                <img class="profile-picture" src="${story.user.thumb_url}" alt="profile picture">
+                <p class="username">${story.user.username}</p>
+            </div>`;
+
+        const targetElem = document.querySelector('.stories-panel');
+        targetElem.insertAdjacentHTML('beforeend', html);    
+    }
 };
 
 const showPosts = async (token) => {
@@ -54,6 +65,7 @@ const showSuggestions = async (token) => {
             'Authorization': 'Bearer ' + token
         }
     });
+    
     const data = await response.json();
     console.log("Suggestions:", data);
 
