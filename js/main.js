@@ -1,6 +1,7 @@
 import {getAccessToken} from './utilities.js';
 const rootURL = 'https://photo-app-secured.herokuapp.com';
 
+
 const getUserData = async (token) => {
     const endpoint = `${rootURL}/api/profile`;
     const response = await fetch(endpoint, {
@@ -63,10 +64,10 @@ const showSuggestions = async (token) => {
                             <p class="username">${user.username}</p>
                             <p class="subtext">suggested for you</p>
                         </div>
-                        <a class="follow" href="">follow</a>
+                        <button class="follow" type="button">follow</button>
                     </div>`;
         
-        document.querySelector('.suggestions-container')
+        document.querySelector('.suggestion-card-container')
             .insertAdjacentHTML('beforeend', html);
     }
 };
