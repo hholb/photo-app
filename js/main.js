@@ -57,6 +57,12 @@ const getMostRecentCommentAsHTML = post => {
     }
 };
 
+const getMoreCommentsButtonHTML = post => {
+    const numComments = post.comments.length;
+    const html = (numComments > 1) ? `<button>Show all ${numComments} comments...</button>` : '';
+    return html;
+};
+
 const postToHTML = post => {
     return `
         <div class="post">
@@ -88,8 +94,8 @@ const postToHTML = post => {
                 <div class="comment-area">
                     <div class="comments">
                         ${getMostRecentCommentAsHTML(post)}
-                        <div>
-                            <button>Show all ${"TODO"} comments...</button>
+                        <div class="more-comments">
+                            ${getMoreCommentsButtonHTML(post)}
                         </div>
                     </div>
                     <div class="add-comment-area">
