@@ -17,7 +17,7 @@ const getUserData = async (token) => {
 const storyToHTML = story => {
     return `
         <div class="story-card">
-            <img class="profile-picture" src="${story.user.thumb_url}" alt="profile picture">
+            <img class="profile-picture" src="${story.user.image_url}" alt="profile picture">
             <p class="username">${story.user.username}</p>
         </div>`;
 };
@@ -50,7 +50,7 @@ const getMostRecentCommentAsHTML = post => {
                 <p><span class="username">${comment.user.username}</span>
                     ${comment.text}
                 </p>
-                <p class="date">${comment.display_time}</p>
+                <p class="comment-date">${comment.display_time}</p>
             </div>`;
     } else {
         return '';
@@ -59,7 +59,7 @@ const getMostRecentCommentAsHTML = post => {
 
 const getMoreCommentsButtonHTML = post => {
     const numComments = post.comments.length;
-    const html = (numComments > 1) ? `<button>Show all ${numComments} comments...</button>` : '';
+    const html = (numComments > 1) ? `<button class="show-comments">Show all ${numComments} comments...</button>` : '';
     return html;
 };
 
@@ -71,20 +71,20 @@ const postToHTML = post => {
                 <i class="fas fa-ellipsis-h fa-lg"></i>
             </header>
             <img class="main image" src="${post.image_url}" alt="${post.alt_text}">
+            <div class="interactions">
+                <div class="like-share">
+                    <button class="icon"><i class="far fa-heart fa-lg"></i></button>
+                    <button class="icon"><i class="far fa-comment fa-lg"></i></button>
+                    <button class="icon"><i class="far fa-paper-plane fa-lg"></i></button>
+                </div>
+                <div class="bookmark">
+                    <button class="icon"><i class="far fa-bookmark fa-lg"></i></button>
+                </div>
+            </div>
+            <div class="likes">
+                <p>${post.likes.length} likes</p>
+            </div>
             <div class="caption-area">
-                <div class="interactions">
-                    <div class="like-share">
-                        <button><i class="far fa-heart fa-lg"></i></button>
-                        <button><i class="far fa-comment fa-lg"></i></button>
-                        <button><i class="far fa-paper-plane fa-lg"></i></button>
-                    </div>
-                    <div class="bookmark">
-                        <button><i class="far fa-bookmark fa-lg"></i></button>
-                    </div>
-                </div>
-                <div class="likes">
-                    <p>${post.likes.length} likes</p>
-                </div>
                 <div class="caption">
                     <p>
                         <span class="username">${post.user.username}</span>
@@ -98,13 +98,14 @@ const postToHTML = post => {
                             ${getMoreCommentsButtonHTML(post)}
                         </div>
                     </div>
-                    <div class="add-comment-area">
-                        <div class="write-comment">
-                            <i class="far fa-grin fa-lg"></i>
-                            <input class="comment-input" type="text" placeholder="Add a comment..." title="Add a comment">
-                        </div>
-                        <button>Post</butotn>
+                </div>
+                <div class="add-comment-area">
+                    <div class="write-comment">
+                        <button class="icon emoji"><i class="far fa-grin fa-lg"></i></button>
+                        <input class="comment-input" type="text" placeholder="Add a comment..." title="Add a comment">
                     </div>
+                    <button class="post-comment">Post</button>
+                </div>
                 </div>
             </div>
         </div>`;

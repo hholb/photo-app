@@ -35,6 +35,46 @@ h1, h2 {
     aspect-ratio: 1 / 1;
     max-width: 8em;
 }
+
+button {
+    border: none;
+    background-color: var(--element-background-color);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+}
+
+button:hover {
+    text-decoration: underline;
+}
+
+button.follow {
+    background-color: var(--page-background-color);
+    color: var(--link-color);
+    font-size: 0.9em;
+}
+
+button.show-comments {
+    font-size: 0.9em;
+}
+
+button.show-comments,
+button.sign-out,
+button.post-comment {
+    color: var(--link-color);
+}
+
+button.sign-out {
+    font-size: 1em;
+}
+
+button.icon {
+    font-size: 1.2em;
+}
+
+button.emoji {
+    padding: 0;
+    margin-right: calc(var(--default-spacing) * 2);
+}
 /* End Global Styles */
 
 /* Navbar */
@@ -90,6 +130,7 @@ nav div a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: 0;
 }
 
 .current-user > * {
@@ -122,6 +163,7 @@ nav div a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0;
 }
 
 .suggestion-card > img, div {
@@ -207,6 +249,7 @@ main {
     flex-direction: column;
     background-color: var(--element-background-color);
     margin-top: var(--default-spacing);
+    padding: 0;
 }
 
 .post header {
@@ -227,13 +270,14 @@ main {
     width: 100%;
 }
 
-.post .interactions {
+.interactions {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0;
 }
 
-.post .interactions > * {
+.interactions > * {
     margin-top: var(--default-spacing);
 }
 
@@ -244,6 +288,10 @@ main {
 .likes {
     font-weight: bold;
     padding-left: var(--default-spacing);
+    margin: 0;
+}
+
+.likes p {
     margin: 0;
 }
 
@@ -277,10 +325,13 @@ main {
 .comment-area {
     display: flex;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
 }
 
 .comment {
     display: flex;
+    flex-direction: column;
     margin: 0;
 }
 
@@ -296,10 +347,11 @@ main {
     font-weight: bold;
 }
 
-.date {
+.comment-date {
     color: var(--grey-text);
     margin: 0;
     padding: var(--default-spacing);
+    font-size: 0.9em;
 }
 
 .add-comment-area {
@@ -339,8 +391,15 @@ main {
         display: none;
     }
 
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     main {
-        width: auto;
+        width: 100%;
+        max-width: 600px;
         margin: var(--default-spacing);
         margin-top: calc(var(--navbar-height) - var(--default-spacing));
     }
