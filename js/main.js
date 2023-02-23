@@ -14,6 +14,14 @@ const getUserData = async (token) => {
     return data;
 };
 
+const storyToHTML = story => {
+    return `
+        <div class="story-card">
+            <img class="profile-picture" src="${story.user.thumb_url}" alt="profile picture">
+            <p class="username">${story.user.username}</p>
+        </div>`;
+}
+
 const showStories = async (token) => {
     const endpoint = `${rootURL}/api/stories`;
     const response = await fetch(endpoint, {
@@ -26,16 +34,11 @@ const showStories = async (token) => {
     const data = await response.json();
     console.log('Stories:', data);
 
-    for (const story of data) {
-        const html = `
-            <div class="story-card">
-                <img class="profile-picture" src="${story.user.thumb_url}" alt="profile picture">
-                <p class="username">${story.user.username}</p>
-            </div>`;
+    const html = data.map(storyToHTML).join('')
 
-        const targetElem = document.querySelector('.stories-panel');
-        targetElem.insertAdjacentHTML('beforeend', html);    
-    }
+    const targetElem = document.querySelector('.stories-panel');
+    targetElem.innerHTML = html;
+
 };
 
 const showPosts = async (token) => {
@@ -57,6 +60,17 @@ const navUsername = (userData) => {
         .insertAdjacentHTML('beforeend', html);
 };
 
+const suggestionToHTML = suggestion => {
+    return `<div class="suggestion-card">
+                <img class="profile-picture" src="${suggestion.image_url}" alt="${suggestion.username}'s profile picture"/>
+                <div>
+                    <p class="username">${suggestion.username}</p>
+                    <p class="subtext">suggested for you</p>
+                </div>
+                <button class="follow" type="button">follow</button>
+            </div>`;
+}
+
 const showSuggestions = async (token) => {
     const endpoint = `${rootURL}/api/suggestions`;
     const response = await fetch(endpoint, {
@@ -69,19 +83,9 @@ const showSuggestions = async (token) => {
     const data = await response.json();
     console.log("Suggestions:", data);
 
-    for (const user of data) {
-        const html = `<div class="suggestion-card">
-                        <img class="profile-picture" src="${user.image_url}" alt="${user.username}'s profile picture"/>
-                        <div>
-                            <p class="username">${user.username}</p>
-                            <p class="subtext">suggested for you</p>
-                        </div>
-                        <button class="follow" type="button">follow</button>
-                    </div>`;
-        
-        document.querySelector('.suggestion-card-container')
-            .insertAdjacentHTML('beforeend', html);
-    }
+    const html = data.map(suggestionToHTML).join('');
+    document.querySelector('.suggestion-card-container')
+        .innerHTML = html;
 };
 
 const initPage = async () => {
@@ -91,9 +95,10 @@ const initPage = async () => {
 
     // then use the access token provided to access data on the user's behalf
     navUsername(userData);
+    showCurrentUserInRightPanel(userData);
+
     showStories(token);
     showPosts(token);
-    showCurrentUserInRightPanel(userData);
     showSuggestions(token);
 };
 

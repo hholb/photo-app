@@ -3,6 +3,7 @@
 /* Global styles */
 :root {
     --element-background-color: white;
+    --page-background-color: #e5e5e5;
     --navbar-height: 70px;
     --default-spacing: 10px;
     --link-color: #3d54c8;
@@ -15,7 +16,7 @@ html {
 
 body {
     margin: 0;
-    background-color:  #E5E5E5;
+    background-color:  var(--page-background-color);
     font-family: Arial, Helvetica, sans-serif;
 }
 
