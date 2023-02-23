@@ -100,21 +100,21 @@ nav div a {
     font-size: 2em;
 }
 
-.suggestions-container {
+#suggestions-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     max-height: 70vh;
 }
 
-.suggestions-container h1 {
+#suggestions-container h1 {
     font-family: Arial, Helvetica, sans-serif;
     color: var(--grey-text);
     font-weight: bold;
     margin: var(--default-spacing);
 }
 
-.suggestion-card-container {
+#suggestion-card-container {
     overflow: scroll;
 }
 
@@ -148,6 +148,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 60vw;
+    max-width: 800px;
     margin: calc(var(--default-spacing) * 2);
     margin-top: var(--navbar-height);
 }
@@ -155,7 +156,7 @@ main {
 
 
 /* Stories Panel */
-.stories-panel {
+#stories-panel {
     display: flex;
     align-items: center;
     margin-top: var(--default-spacing);
@@ -164,7 +165,7 @@ main {
     overflow: hidden;
 }
 
-.stories-panel img {
+#stories-panel img {
     width: 100%;
     max-width: 4em;
 }
@@ -186,7 +187,7 @@ main {
 /* End Stoires Panel */
 
 /* Cards */
-.content-card-area {
+.posts-area {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -194,40 +195,45 @@ main {
     width: 100%;
 }
 
-.content-card {
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: var(--default-spacing);
+}
+
+.post {
     display: flex;
     flex-direction: column;
     background-color: var(--element-background-color);
     margin-top: var(--default-spacing);
-    margin: var(--default-spacing);
-    width: 100%;
 }
 
-.content-card header {
+.post header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.content-card header > * {
+.post header > * {
     margin: calc(var(--default-spacing) * 2);
 }
 
-.content-card h1 {
+.post h1 {
     font-weight: 600;
 }
 
-.content-card img {
+.post img {
     width: 100%;
 }
 
-.content-card .interactions {
+.post .interactions {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.content-card .interactions > * {
+.post .interactions > * {
     margin-top: var(--default-spacing);
 }
 
