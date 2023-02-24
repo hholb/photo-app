@@ -16,7 +16,7 @@ html {
 
 body {
     margin: 0;
-    background-color:  var(--page-background-color);
+    background-color: var(--page-background-color);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -25,7 +25,8 @@ a {
     color: var(--link-color);
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: 'Comfortaa', cursive;
     font-weight: 400;
 }
@@ -119,9 +120,10 @@ nav div a {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     position: fixed;
     top: var(--navbar-height);
-    left: 60vw;
+    left: 65vw;
     max-width: 400px;
     margin: var(--default-spacing);
 }
@@ -166,7 +168,8 @@ nav div a {
     padding: 0;
 }
 
-.suggestion-card > img, div {
+.suggestion-card > img,
+div {
     padding: var(--default-spacing);
 }
 
@@ -189,20 +192,19 @@ nav div a {
 main {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     width: 60vw;
-    max-width: 800px;
-    margin: calc(var(--default-spacing) * 2);
     margin-top: var(--navbar-height);
+    margin-left: 2.5vw;
+    margin-right: 2.5vw;
 }
-
-
 
 /* Stories Panel */
 #stories-panel {
     display: flex;
     align-items: center;
     margin-top: var(--default-spacing);
-    width: 100%;
+    width: 60vw;
     background-color: var(--element-background-color);
     overflow: hidden;
 }
@@ -234,7 +236,7 @@ main {
     flex-direction: column;
     align-items: center;
     margin: var(--default-spacing);
-    width: 100%;
+    width: 60vw;
 }
 
 .posts-container {
@@ -372,7 +374,7 @@ main {
 .write-comment {
     display: flex;
     align-items: center;
-    width: 100%;    
+    width: 100%;
 }
 
 .write-comment > * {
@@ -386,7 +388,13 @@ main {
 /* End Main Content Area */
 
 /* Media Queries */
-@media (max-width: 850px) {
+@media screen and (max-width: 1000px) {
+  #recommendations-panel {
+    left: 60vw;
+  }
+}
+
+@media screen and (max-width: 850px) {
     #recommendations-panel {
         display: none;
     }
@@ -398,9 +406,14 @@ main {
     }
 
     main {
-        width: 100%;
-        max-width: 600px;
-        margin: var(--default-spacing);
+        align-items: center;
+        width: 90vw;
         margin-top: calc(var(--navbar-height) - var(--default-spacing));
+        margin-left: 2.5vw;
+        margin-right: 2.5vw;
+    }
+
+    #stories-panel {
+      width: 90vw;
     }
 }

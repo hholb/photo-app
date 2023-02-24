@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-    <script src="js/main.js" type="module" defer></script>
-    <title>Photo App</title>
-</head>
-<body>
-    
-    <nav>
-        <h1 id="nav-logo"><a href="index.html">Photo App</a></h1>
-        <div>
-            <p class="current-username"></p>
-            <button class="sign-out">Sign out</button>
-        </div>
-    </nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+        />
+        <script src="js/main.js" type="module" defer></script>
+        <title>Photo App</title>
+    </head>
+    <body>
+        <nav>
+            <h1 id="nav-logo"><a href="index.html">Photo App</a></h1>
+            <div>
+                <p class="current-username"></p>
+                <button class="sign-out">Sign out</button>
+            </div>
+        </nav>
 
-    <aside id="recommendations-panel">
-        <div class="current-user"></div>
+        <aside id="recommendations-panel">
+            <div class="current-user"></div>
+            <div id="suggestions-container">
+                <h1>Suggestions for you</h1>
+                <div id="suggestion-card-container"></div>
+            </div>
+        </aside>
 
-        <div id="suggestions-container">
-            <h1>Suggestions for you</h1>
-            <div id="suggestion-card-container"></div>
-        </div>
-    </aside>
-     
-    <main>
-        <section id="posts-area">
-            <section id="stories-panel"></section>
-            <section id="posts-container"></section>         
-        </section>
-    </main>
-
-</body>
+        <main>
+            <section id="posts-area">
+                <section id="stories-panel"></section>
+                <section id="posts-container"></section>
+            </section>
+        </main>
+    </body>
 </html>

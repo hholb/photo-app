@@ -1,23 +1,23 @@
 import { getAccessToken } from './utilities.js';
 const rootURL = 'https://photo-app-secured.herokuapp.com';
 
-
 const getUserData = async (token) => {
     const endpoint = `${rootURL}/api/profile`;
     const response = await fetch(endpoint, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
+            Authorization: 'Bearer ' + token,
+        },
     });
     const data = await response.json();
     return data;
 };
 
-const storyToHTML = story => {
+const storyToHTML = (story) => {
     return `
         <div class="story-card">
-            <img class="profile-picture" src="${story.user.image_url}" alt="profile picture">
+            <img class="profile-picture" src="${story.user.image_url}"
+             alt="profile picture">
             <p class="username">${story.user.username}</p>
         </div>`;
 };
@@ -27,22 +27,22 @@ const showStories = async (token) => {
     const response = await fetch(endpoint, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
+            Authorization: 'Bearer ' + token,
+        },
     });
 
     const data = await response.json();
     console.log('Stories:', data);
 
-    const html = data.map(storyToHTML).join('')
+    const html = data.map(storyToHTML).join('');
 
     const targetElem = document.querySelector('#stories-panel');
     targetElem.innerHTML = html;
-
 };
 
-const getMostRecentCommentAsHTML = post => {
-    const commentIndex = (post.comments.length > 0) ? post.comments.length - 1 : 0;
+const getMostRecentCommentAsHTML = (post) => {
+    const commentIndex =
+        post.comments.length > 0 ? post.comments.length - 1 : 0;
     const comment = post.comments[commentIndex];
     if (comment) {
         return `
@@ -57,20 +57,25 @@ const getMostRecentCommentAsHTML = post => {
     }
 };
 
-const getMoreCommentsButtonHTML = post => {
+const getMoreCommentsButtonHTML = (post) => {
     const numComments = post.comments.length;
-    const html = (numComments > 1) ? `<button class="show-comments">Show all ${numComments} comments...</button>` : '';
+    const html =
+        numComments > 1
+            ? `<button class="show-comments">Show all ${numComments} comments...</button>`
+            : '';
     return html;
 };
 
-const postToHTML = post => {
+const postToHTML = (post) => {
     return `
         <div class="post">
             <header>
                 <h1 class="username">${post.user.username}</h1>
                 <i class="fas fa-ellipsis-h fa-lg"></i>
             </header>
-            <img class="main image" src="${post.image_url}" alt="${post.alt_text}">
+            <img class="main image" src="${post.image_url}" alt="${
+        post.alt_text
+    }">
             <div class="interactions">
                 <div class="like-share">
                     <button class="icon"><i class="far fa-heart fa-lg"></i></button>
@@ -116,33 +121,36 @@ const showPosts = async (token) => {
     const response = await fetch(endpoint, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
+            Authorization: 'Bearer ' + token,
+        },
     });
 
     const data = await response.json();
     console.log('Posts:', data);
 
     const html = data.map(postToHTML).join('');
-    document.querySelector('#posts-container')
-        .insertAdjacentHTML('beforeend', html)
+    document
+        .querySelector('#posts-container')
+        .insertAdjacentHTML('beforeend', html);
 };
 
 const showCurrentUserInRightPanel = (userData) => {
     const html = `<img class="profile-picture" src="${userData.image_url}" alt="profile picture"\>
                 <h2>${userData.username}</h2>`;
 
-    document.querySelector('#recommendations-panel .current-user')
+    document
+        .querySelector('#recommendations-panel .current-user')
         .insertAdjacentHTML('beforeend', html);
 };
 
 const navUsername = (userData) => {
     const html = `${userData.username}`;
-    document.querySelector('.current-username')
+    document
+        .querySelector('.current-username')
         .insertAdjacentHTML('beforeend', html);
 };
 
-const suggestionToHTML = suggestion => {
+const suggestionToHTML = (suggestion) => {
     return `<div class="suggestion-card">
                 <img class="profile-picture" src="${suggestion.image_url}" alt="${suggestion.username}'s profile picture"/>
                 <div>
@@ -158,16 +166,15 @@ const showSuggestions = async (token) => {
     const response = await fetch(endpoint, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
+            Authorization: 'Bearer ' + token,
+        },
     });
 
     const data = await response.json();
-    console.log("Suggestions:", data);
+    console.log('Suggestions:', data);
 
     const html = data.map(suggestionToHTML).join('');
-    document.querySelector('#suggestion-card-container')
-        .innerHTML = html;
+    document.querySelector('#suggestion-card-container').innerHTML = html;
 };
 
 const initPage = async () => {
