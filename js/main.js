@@ -1,5 +1,6 @@
 import { getAccessToken } from './utilities.js';
 const rootURL = 'https://photo-app-secured.herokuapp.com';
+const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
 
 const getUserData = async (token) => {
     const endpoint = `${rootURL}/api/profile`;
@@ -61,14 +62,33 @@ const getMoreCommentsButtonHTML = (post) => {
     const numComments = post.comments.length;
     const html =
         numComments > 1
-            ? `<button class="show-comments">Show all ${numComments} comments...</button>`
+            ? `<button class="show-comments" onclick="showModalPost(${post.id})">Show all ${numComments} comments...</button>`
             : '';
     return html;
 };
 
+window.showModalPost = async (postId) => {
+    const endpoint = `${rootURL}/api/posts/${postId}`;
+    const response = await fetch(endpoint, {
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        }
+    });
+
+    const data = await response.json();
+    const html = modalPostToHTML(data);
+    document.querySelector('#modal-post-container').innerHTML = html;
+    document.querySelector('#modal').classList = '';
+};
+
+window.hideModal = () => {
+    document.querySelector('#modal').classList += 'hidden';
+}
+
 const postToHTML = (post) => {
     return `
-        <div class="post">
+        <div id="post_${post.id}"class="post" data-post-id="${post.id}">
             <header>
                 <h1 class="username">${post.user.username}</h1>
                 <i class="fas fa-ellipsis-h fa-lg"></i>
@@ -115,6 +135,10 @@ const postToHTML = (post) => {
             </div>
         </div>`;
 };
+
+const modalPostToHTML = (post) => {
+    return `<div>${post}</div>`;
+}
 
 const showPosts = async (token) => {
     const endpoint = `${rootURL}/api/posts`;
@@ -179,7 +203,6 @@ const showSuggestions = async (token) => {
 
 const initPage = async () => {
     // first log in (we will build on this after Spring Break):
-    const token = await getAccessToken(rootURL, 'webdev', 'password');
     const userData = await getUserData(token);
 
     // then use the access token provided to access data on the user's behalf

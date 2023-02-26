@@ -76,6 +76,10 @@ button.emoji {
     padding: 0;
     margin-right: calc(var(--default-spacing) * 2);
 }
+
+.hidden {
+    display: none;
+}
 /* End Global Styles */
 
 /* Navbar */
@@ -386,6 +390,16 @@ main {
 }
 /* End Cards */
 /* End Main Content Area */
+
+/* Modal Window */
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(97, 102, 103, .80);
+}
 
 /* Media Queries */
 @media screen and (max-width: 1000px) {
