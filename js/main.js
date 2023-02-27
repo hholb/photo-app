@@ -1,6 +1,7 @@
 import { getAccessToken } from './utilities.js';
 const rootURL = 'https://photo-app-secured.herokuapp.com';
 const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
+const modalElement = document.querySelector('#modal-bg');
 
 const getUserData = async (token) => {
     const endpoint = `${rootURL}/api/profile`;
@@ -71,20 +72,23 @@ window.showModalPost = async (postId) => {
     const endpoint = `${rootURL}/api/posts/${postId}`;
     const response = await fetch(endpoint, {
         headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        }
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
     });
 
     const data = await response.json();
     const html = modalPostToHTML(data);
-    document.querySelector('#modal-post-container').innerHTML = html;
-    document.querySelector('#modal').classList = '';
+    document.querySelector('#modal').innerHTML = html;
+    modalElement.classList = 'modal-show';
+    modalElement.setAttribute('aria-hidden', 'false');
+    document.querySelector('#modal-close').focus();
 };
 
 window.hideModal = () => {
-    document.querySelector('#modal').classList += 'hidden';
-}
+    modalElement.classList = 'hidden';
+    modalElement.setAttribute('aria-hidden', 'true');
+};
 
 const postToHTML = (post) => {
     return `
@@ -137,7 +141,33 @@ const postToHTML = (post) => {
 };
 
 const modalPostToHTML = (post) => {
-    return `<div>${post}</div>`;
+    return `
+    <button id="modal-close" class="icon" onclick="hideModal()"><i class="fa-solid fa-x"></i></button>
+    <div class="modal-body">
+        <div class="image" style="background-image: url('${post.image_url}');"></div>
+        <div class="modal-comment-area">
+            <h2 class="username">${post.user.username}</h2>
+            <div class="modal-comments">
+                ${getCommentsHTML(post.comments)}
+            </div>
+        </div>
+    </div>`;
+};
+
+const commentToHTML = (comment) => {
+    return `
+    <div class="modal-comment">
+        <p><span class="username">${comment.user.username}</span> ${comment.text}</p>
+        <p class="comment-date">${comment.display_time}</p>
+    </div>`;
+};
+
+window.getCommentsHTML = (commentArray) => {
+    let html;
+    if (commentArray) {
+        html = commentArray.map(commentToHTML).join('');
+    }
+    return html;
 }
 
 const showPosts = async (token) => {
@@ -200,6 +230,15 @@ const showSuggestions = async (token) => {
     const html = data.map(suggestionToHTML).join('');
     document.querySelector('#suggestion-card-container').innerHTML = html;
 };
+
+document.addEventListener('focus', function(event) {
+    console.log('focus');
+    if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
+        console.log('back to top!');
+        event.stopPropagation();
+        document.querySelector('#modal-close').focus();
+    }
+}, true);
 
 const initPage = async () => {
     // first log in (we will build on this after Spring Break):

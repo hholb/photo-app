@@ -77,9 +77,6 @@ button.emoji {
     margin-right: calc(var(--default-spacing) * 2);
 }
 
-.hidden {
-    display: none;
-}
 /* End Global Styles */
 
 /* Navbar */
@@ -392,13 +389,74 @@ main {
 /* End Main Content Area */
 
 /* Modal Window */
-#modal {
+#modal-bg {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(97, 102, 103, .80);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#modal-close {
+    align-self: flex-end;
+    background-color: var(--page-background-color);
+}
+
+#modal {
+    width: 70vw;
+    height: 70vh;
+    background-color: var(--page-background-color);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--default-spacing)  * 2);
+}
+
+.modal-body {
+    padding-bottom: 30px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    height: calc(70vh - 10vh);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+}
+
+.modal-comment-area {
+    padding: 0 20px;
+    height: 100%;
+    overflow-y: auto;
+    grid-column: 2;
+}
+
+.modal-comment {
+    margin-bottom: 5px;
+    padding: 5px;
+    align-items: center;
+    border-bottom: 1px solid #CCC;
+}
+
+.modal-comment .username {
+    font-weight: bold;
+}
+
+.modal-show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* End Modal Window */
+
+.hidden {
+    display: none !important;
 }
 
 /* Media Queries */
