@@ -18,8 +18,7 @@ async function initPage() {
     initNavBar();
     initStoriesPanel();
     initRightPanel();
-
-    displayPosts(token);
+    initPosts();
 }
 
 function initNavBar() {
@@ -89,16 +88,29 @@ function displayCurrentUserInRightPanel() {
         .insertAdjacentHTML('beforeend', html);
 }
 
-const displayPosts = async (token) => {
+async function initPosts() {
+    const postsJSON = await getPostJSON();
+    const postsHTML = getPostHTML(postsJSON);
+    displayPosts(postsHTML);
+}
+
+async function getPostJSON() {
     const endpoint = `/api/posts`;
     const data = await getDataFromEndpointAsJSON(endpoint);
     console.log('Posts:', data);
+    return data;
+}
 
-    const html = data.map(postToHTML).join('');
+function getPostHTML(postJSON) {
+    const html = postJSON.map(postToHTML).join('');
+    return html;
+}
+
+function displayPosts(postHTML) {
     document
         .querySelector('#posts-container')
-        .insertAdjacentHTML('beforeend', html);
-};
+        .insertAdjacentHTML('beforeend', postHTML);
+}
 
 window.showModalPost = async (postId) => {
     const endpoint = `/api/posts/${postId}`;
