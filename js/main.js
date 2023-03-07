@@ -8,35 +8,29 @@ const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
 const currentUserData = await getCurrentUserData();
 const modalBackground = document.querySelector('#modal-bg');
 
-async function initPage() {
-    navUsername(currentUserData);
-    displayCurrentUserInRightPanel(currentUserData);
-
-    initStoriesPanel();
-    displayPosts(token);
-    displaySuggestions(token);
-}
-
-async function getDataFromEndpointAsJSON(endpoint) {
-    const url = `${rootURL}${endpoint}`;
-
-    const headers = {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        },
-    };
-
-    const response = await fetch(url, headers);
-
-    const data = await response.json();
-    return data;
-}
-
 async function getCurrentUserData() {
     const endpoint = `/api/profile`;
     const data = await getDataFromEndpointAsJSON(endpoint);
     return data;
+}
+
+async function initPage() {
+    initNavBar();
+    initStoriesPanel();
+    initRightPanel();
+
+    displayPosts(token);
+}
+
+function initNavBar() {
+    displayCurrentUserInNavBar();
+}
+
+function displayCurrentUserInNavBar() {
+    const html = `${currentUserData.username}`;
+    document
+        .querySelector('.current-username')
+        .insertAdjacentHTML('beforeend', html);
 }
 
 async function initStoriesPanel() {
@@ -61,6 +55,50 @@ function displayStories(storiesHTML) {
     const targetElem = document.querySelector('#stories-panel');
     targetElem.innerHTML = storiesHTML;
 }
+
+async function initRightPanel() {
+    displayCurrentUserInRightPanel();
+    const suggestionsJSON = await getSuggestionsData();
+    const suggestionsHTML = getSuggestionsAsHTML(suggestionsJSON);
+    displaySuggestions(suggestionsHTML);
+}
+
+async function getSuggestionsData() {
+    const endpoint = `/api/suggestions`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
+    console.log('Suggestions:', data);
+    return data;
+}
+
+function getSuggestionsAsHTML(suggestions) {
+    const html = suggestions.map(suggestionToHTML).join('');
+    return html;
+}
+
+function displaySuggestions(suggestionsHTML) {
+    document.querySelector('#suggestion-card-container').innerHTML =
+        suggestionsHTML;
+}
+
+function displayCurrentUserInRightPanel() {
+    const html = `<img class="profile-picture" src="${currentUserData.image_url}" alt="profile picture"\>
+                <h2>${currentUserData.username}</h2>`;
+
+    document
+        .querySelector('#recommendations-panel .current-user')
+        .insertAdjacentHTML('beforeend', html);
+}
+
+const displayPosts = async (token) => {
+    const endpoint = `/api/posts`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
+    console.log('Posts:', data);
+
+    const html = data.map(postToHTML).join('');
+    document
+        .querySelector('#posts-container')
+        .insertAdjacentHTML('beforeend', html);
+};
 
 window.showModalPost = async (postId) => {
     const endpoint = `/api/posts/${postId}`;
@@ -109,49 +147,6 @@ const getCommentsHTML = (commentArray) => {
     return html;
 };
 
-const displayPosts = async (token) => {
-    const endpoint = `/api/posts`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    console.log('Posts:', data);
-
-    const html = data.map(postToHTML).join('');
-    document
-        .querySelector('#posts-container')
-        .insertAdjacentHTML('beforeend', html);
-};
-
-const displayCurrentUserInRightPanel = (userData) => {
-    const html = `<img class="profile-picture" src="${userData.image_url}" alt="profile picture"\>
-                <h2>${userData.username}</h2>`;
-
-    document
-        .querySelector('#recommendations-panel .current-user')
-        .insertAdjacentHTML('beforeend', html);
-};
-
-const navUsername = (userData) => {
-    const html = `${userData.username}`;
-    document
-        .querySelector('.current-username')
-        .insertAdjacentHTML('beforeend', html);
-};
-
-async function getSuggestionsData() {
-    const endpoint = `/api/suggestions`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    console.log('Suggestions:', data);
-    return data;
-}
-
-function getSuggestionsAsHTML(suggestions) {
-    const html = suggestions.map(suggestionToHTML).join('');
-    return html;
-}
-
-function displaySuggestions(suggestions) {
-    document.querySelector('#suggestion-card-container').innerHTML = html;
-}
-
 document.addEventListener(
     'focus',
     function (event) {
@@ -167,5 +162,21 @@ document.addEventListener(
     },
     true
 );
+
+async function getDataFromEndpointAsJSON(endpoint) {
+    const url = `${rootURL}${endpoint}`;
+
+    const headers = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+    };
+
+    const response = await fetch(url, headers);
+
+    const data = await response.json();
+    return data;
+}
 
 initPage();
