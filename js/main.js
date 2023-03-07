@@ -1,12 +1,9 @@
-import { getAccessToken } from './utilities.js';
+import { getDataFromEndpointAsJSON } from './utilities.js';
 import { storyToHTML } from './storyHTML.js';
 import { postToHTML } from './postHTML.js';
 import { suggestionToHTML } from './suggestionHTML.js';
 
-const rootURL = 'https://photo-app-secured.herokuapp.com';
-const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
 const currentUserData = await getCurrentUserData();
-const modalBackground = document.querySelector('#modal-bg');
 
 async function getCurrentUserData() {
     const endpoint = `/api/profile`;
@@ -47,8 +44,7 @@ function getStoriesAsHTML(storiesData) {
 }
 
 function displayStories(storiesHTML) {
-    document.querySelector('#stories-panel')
-        .innerHTML = storiesHTML;
+    document.querySelector('#stories-panel').innerHTML = storiesHTML;
 }
 
 async function initRightPanel() {
@@ -68,8 +64,8 @@ function getSuggestionsAsHTML(suggestions) {
 }
 
 function displaySuggestions(suggestionsHTML) {
-    document.querySelector('#suggestion-card-container')
-        .innerHTML = suggestionsHTML;
+    document.querySelector('#suggestion-card-container').innerHTML =
+        suggestionsHTML;
 }
 
 function displayCurrentUserInRightPanel() {
@@ -85,6 +81,7 @@ async function initPosts() {
     const postsJSON = await getPostJSON();
     const postsHTML = getPostHTML(postsJSON);
     displayPosts(postsHTML);
+    addModalEventListener();
 }
 
 async function getPostJSON() {
@@ -102,22 +99,16 @@ function displayPosts(postHTML) {
         .insertAdjacentHTML('beforeend', postHTML);
 }
 
-window.showModalPost = async (postId) => {
-    const endpoint = `/api/posts/${postId}`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    const html = modalPostToHTML(data);
-    document.querySelector('#modal').innerHTML = html;
-    modalBackground.classList = 'modal-show';
-    modalBackground.setAttribute('aria-hidden', 'false');
-    document.querySelector('#modal-close').focus();
-};
+const modalBackground = document.querySelector('#modal-bg');
 
-window.hideModal = () => {
-    modalBackground.classList = 'hidden';
-    modalBackground.setAttribute('aria-hidden', 'true');
-};
+function addModalEventListener() {
+    const posts = document.querySelectorAll('.show-comments');
+    posts.forEach((post) => {
+        post.addEventListener('click', displayModalPost);
+    });
+}
 
-const modalPostToHTML = (post) => {
+function modalPostToHTML(post) {
     return `
     <button id="modal-close" class="icon" onclick="hideModal()"><i class="fa-solid fa-x"></i></button>
     <div class="modal-body">
@@ -131,22 +122,40 @@ const modalPostToHTML = (post) => {
             </div>
         </div>
     </div>`;
-};
+}
 
-const commentToHTML = (comment) => {
+function commentToHTML(comment) {
     return `
     <div class="modal-comment">
         <p><span class="username">${comment.user.username}</span> ${comment.text}</p>
         <p class="comment-date">${comment.display_time}</p>
     </div>`;
-};
+}
 
-const getCommentsHTML = (commentArray) => {
+function getCommentsHTML(commentArray) {
     let html;
     if (commentArray) {
         html = commentArray.map(commentToHTML).join('');
     }
     return html;
+}
+
+window.displayModalPost = async (event) => {
+    const postId = event.currentTarget.getAttribute('data-post-id');
+    const endpoint = `/api/posts/${postId}`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
+    const html = modalPostToHTML(data);
+    document.querySelector('#modal').innerHTML = html;
+    const closeButton = document.querySelector('#modal-close');
+    modalBackground.classList = 'modal-show';
+    modalBackground.setAttribute('aria-hidden', 'false');
+    closeButton.addEventListener('click', hideModal);
+    closeButton.focus();
+};
+
+window.hideModal = () => {
+    modalBackground.classList = 'hidden';
+    modalBackground.setAttribute('aria-hidden', 'true');
 };
 
 document.addEventListener(
@@ -164,21 +173,5 @@ document.addEventListener(
     },
     true
 );
-
-async function getDataFromEndpointAsJSON(endpoint) {
-    const url = `${rootURL}${endpoint}`;
-
-    const headers = {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        },
-    };
-
-    const response = await fetch(url, headers);
-
-    const data = await response.json();
-    return data;
-}
 
 initPage();

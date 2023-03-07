@@ -7,7 +7,11 @@
  * @param {string} username: Your username for the course API
  * @param {string} password: Your password for the course API
  */
-export async function getAccessToken(rootURL, username, password) {
+
+const rootURL = 'https://photo-app-secured.herokuapp.com';
+const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
+
+async function getAccessToken(rootURL, username, password) {
     const postData = {
         username: username,
         password: password,
@@ -22,4 +26,20 @@ export async function getAccessToken(rootURL, username, password) {
     });
     const data = await response.json();
     return data.access_token;
+}
+
+export async function getDataFromEndpointAsJSON(endpoint) {
+    const url = `${rootURL}${endpoint}`;
+
+    const headers = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+    };
+
+    const response = await fetch(url, headers);
+
+    const data = await response.json();
+    return data;
 }

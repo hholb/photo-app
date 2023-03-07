@@ -5,9 +5,7 @@ export function postToHTML(post) {
                 <h1 class="username">${post.user.username}</h1>
                 <i class="fas fa-ellipsis-h fa-lg"></i>
             </header>
-            <img class="main image" src="${post.image_url}" alt="${
-        post.alt_text
-    }">
+            <img class="main image" src="${post.image_url}" alt="${post.alt_text}">
             <div class="interactions">
                 <div class="like-share">
                     <button class="icon"><i class="far fa-heart fa-lg"></i></button>
@@ -70,7 +68,7 @@ function getMoreCommentsButtonHTML(post) {
     const numComments = post.comments.length;
     const html =
         numComments > 1
-            ? `<button class="show-comments" onclick="showModalPost(${post.id})">Show all ${numComments} comments...</button>`
+            ? `<button class="show-comments" data-post-id="${post.id}">Show all ${numComments} comments...</button>`
             : '';
     return html;
 }
