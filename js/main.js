@@ -1,17 +1,26 @@
 import { getAccessToken } from './utilities.js';
+
 const rootURL = 'https://photo-app-secured.herokuapp.com';
 const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
 const modalElement = document.querySelector('#modal-bg');
 
-const getUserData = async (token) => {
-    const endpoint = `${rootURL}/api/profile`;
-    const response = await fetch(endpoint, {
+const getDataFromEndpointAsJSON = async (endpoint) => {
+    const url = `${rootURL}${endpoint}`;
+
+    const response = await fetch(url, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
         },
     });
+
     const data = await response.json();
+    return data;
+};
+
+const getUserData = async () => {
+    const endpoint = `/api/profile`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
     return data;
 };
 
@@ -24,20 +33,15 @@ const storyToHTML = (story) => {
         </div>`;
 };
 
-const showStories = async (token) => {
-    const endpoint = `${rootURL}/api/stories`;
-    const response = await fetch(endpoint, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        },
-    });
-
-    const data = await response.json();
+const getStoires = async () => {
+    const endpoint = `/api/stories`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
     console.log('Stories:', data);
+    return data;
+};
 
-    const html = data.map(storyToHTML).join('');
-
+const showStories = (storiesData) => {
+    const html = storiesData.map(storyToHTML).join('');
     const targetElem = document.querySelector('#stories-panel');
     targetElem.innerHTML = html;
 };
@@ -144,7 +148,9 @@ const modalPostToHTML = (post) => {
     return `
     <button id="modal-close" class="icon" onclick="hideModal()"><i class="fa-solid fa-x"></i></button>
     <div class="modal-body">
-        <div class="image" style="background-image: url('${post.image_url}');"></div>
+        <div class="image" style="background-image: url('${
+            post.image_url
+        }');"></div>
         <div class="modal-comment-area">
             <h2 class="username">${post.user.username}</h2>
             <div class="modal-comments">
@@ -168,7 +174,7 @@ window.getCommentsHTML = (commentArray) => {
         html = commentArray.map(commentToHTML).join('');
     }
     return html;
-}
+};
 
 const showPosts = async (token) => {
     const endpoint = `${rootURL}/api/posts`;
@@ -216,29 +222,29 @@ const suggestionToHTML = (suggestion) => {
 };
 
 const showSuggestions = async (token) => {
-    const endpoint = `${rootURL}/api/suggestions`;
-    const response = await fetch(endpoint, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        },
-    });
-
-    const data = await response.json();
+    const endpoint = `/api/suggestions`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
     console.log('Suggestions:', data);
 
     const html = data.map(suggestionToHTML).join('');
     document.querySelector('#suggestion-card-container').innerHTML = html;
 };
 
-document.addEventListener('focus', function(event) {
-    console.log('focus');
-    if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
-        console.log('back to top!');
-        event.stopPropagation();
-        document.querySelector('#modal-close').focus();
-    }
-}, true);
+document.addEventListener(
+    'focus',
+    function (event) {
+        console.log('focus');
+        if (
+            modalElement.getAttribute('aria-hidden') === 'false' &&
+            !modalElement.contains(event.target)
+        ) {
+            console.log('back to top!');
+            event.stopPropagation();
+            document.querySelector('#modal-close').focus();
+        }
+    },
+    true
+);
 
 const initPage = async () => {
     // first log in (we will build on this after Spring Break):
@@ -248,7 +254,8 @@ const initPage = async () => {
     navUsername(userData);
     showCurrentUserInRightPanel(userData);
 
-    showStories(token);
+    const stories = await getStoires();
+    showStories(stories);
     showPosts(token);
     showSuggestions(token);
 };
