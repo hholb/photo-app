@@ -10,8 +10,7 @@ const modalBackground = document.querySelector('#modal-bg');
 
 async function getCurrentUserData() {
     const endpoint = `/api/profile`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    return data;
+    return await getDataFromEndpointAsJSON(endpoint);
 }
 
 async function initPage() {
@@ -40,19 +39,16 @@ async function initStoriesPanel() {
 
 async function getStoiresData() {
     const endpoint = `/api/stories`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    console.log('Stories:', data);
-    return data;
+    return await getDataFromEndpointAsJSON(endpoint);
 }
 
 function getStoriesAsHTML(storiesData) {
-    const html = storiesData.map(storyToHTML).join('');
-    return html;
+    return storiesData.map(storyToHTML).join('');
 }
 
 function displayStories(storiesHTML) {
-    const targetElem = document.querySelector('#stories-panel');
-    targetElem.innerHTML = storiesHTML;
+    document.querySelector('#stories-panel')
+        .innerHTML = storiesHTML;
 }
 
 async function initRightPanel() {
@@ -64,19 +60,16 @@ async function initRightPanel() {
 
 async function getSuggestionsData() {
     const endpoint = `/api/suggestions`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    console.log('Suggestions:', data);
-    return data;
+    return await getDataFromEndpointAsJSON(endpoint);
 }
 
 function getSuggestionsAsHTML(suggestions) {
-    const html = suggestions.map(suggestionToHTML).join('');
-    return html;
+    return suggestions.map(suggestionToHTML).join('');
 }
 
 function displaySuggestions(suggestionsHTML) {
-    document.querySelector('#suggestion-card-container').innerHTML =
-        suggestionsHTML;
+    document.querySelector('#suggestion-card-container')
+        .innerHTML = suggestionsHTML;
 }
 
 function displayCurrentUserInRightPanel() {
@@ -96,14 +89,11 @@ async function initPosts() {
 
 async function getPostJSON() {
     const endpoint = `/api/posts`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    console.log('Posts:', data);
-    return data;
+    return await getDataFromEndpointAsJSON(endpoint);
 }
 
 function getPostHTML(postJSON) {
-    const html = postJSON.map(postToHTML).join('');
-    return html;
+    return postJSON.map(postToHTML).join('');
 }
 
 function displayPosts(postHTML) {
