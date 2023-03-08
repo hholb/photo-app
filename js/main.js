@@ -116,6 +116,7 @@ window.displayModalPost = async (event) => {
     );
     modalBackground.classList = 'modal-show';
     modalBackground.setAttribute('aria-hidden', 'false');
+    window.modalCloseButtonAddEventAndFocus();
 };
 
 window.getModalPostHTML = async (postId) => {
