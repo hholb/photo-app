@@ -2,6 +2,7 @@ import { getDataFromEndpointAsJSON } from './utilities.js';
 import { storyToHTML } from './storyHTML.js';
 import { postToHTML } from './postHTML.js';
 import { suggestionToHTML } from './suggestionHTML.js';
+import { modalPostToHTML } from './modalHTML.js';
 
 const currentUserData = await getCurrentUserData();
 
@@ -104,51 +105,27 @@ const modalBackground = document.querySelector('#modal-bg');
 function addModalEventListener() {
     const posts = document.querySelectorAll('.show-comments');
     posts.forEach((post) => {
-        post.addEventListener('click', displayModalPost);
+        post.addEventListener('click', window.displayModalPost);
     });
-}
-
-function modalPostToHTML(post) {
-    return `
-    <button id="modal-close" class="icon" onclick="hideModal()"><i class="fa-solid fa-x"></i></button>
-    <div class="modal-body">
-        <div class="image" style="background-image: url('${
-            post.image_url
-        }');"></div>
-        <div class="modal-comment-area">
-            <h2 class="username">${post.user.username}</h2>
-            <div class="modal-comments">
-                ${getCommentsHTML(post.comments)}
-            </div>
-        </div>
-    </div>`;
-}
-
-function commentToHTML(comment) {
-    return `
-    <div class="modal-comment">
-        <p><span class="username">${comment.user.username}</span> ${comment.text}</p>
-        <p class="comment-date">${comment.display_time}</p>
-    </div>`;
-}
-
-function getCommentsHTML(commentArray) {
-    let html;
-    if (commentArray) {
-        html = commentArray.map(commentToHTML).join('');
-    }
-    return html;
 }
 
 window.displayModalPost = async (event) => {
     const postId = event.currentTarget.getAttribute('data-post-id');
-    const endpoint = `/api/posts/${postId}`;
-    const data = await getDataFromEndpointAsJSON(endpoint);
-    const html = modalPostToHTML(data);
-    document.querySelector('#modal').innerHTML = html;
-    const closeButton = document.querySelector('#modal-close');
+    document.querySelector('#modal').innerHTML = await window.getModalPostHTML(
+        postId
+    );
     modalBackground.classList = 'modal-show';
     modalBackground.setAttribute('aria-hidden', 'false');
+};
+
+window.getModalPostHTML = async (postId) => {
+    const endpoint = `/api/posts/${postId}`;
+    const data = await getDataFromEndpointAsJSON(endpoint);
+    return modalPostToHTML(data);
+};
+
+window.modalCloseButtonAddEventAndFocus = () => {
+    const closeButton = document.querySelector('#modal-close');
     closeButton.addEventListener('click', hideModal);
     closeButton.focus();
 };
