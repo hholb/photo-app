@@ -81,7 +81,8 @@ function getLikeButton(post, currentUserId) {
     const icon = isLiked ? 'fas' : 'far';
     const handler = isLiked ? 'unlikePost' : 'likePost';
     const likeId = isLiked ? isLiked.id : '';
-    return `<button class="icon like" data-liked=${(isLiked) ? "true" : "false"} data-post-id="${post.id}" data-like-id="${likeId}" onclick="${handler}(event)"><i class="${icon} fa-heart fa-lg"></i></button>`;
+    const ariaLabel = isLiked ? 'Unlike' : 'Like';
+    return `<button class="icon like" data-liked=${(isLiked) ? "true" : "false"} data-post-id="${post.id}" data-like-id="${likeId}" onclick="${handler}(event)" aria-label="${ariaLabel}"><i class="${icon} fa-heart fa-lg"></i></button>`;
 }
 
 function getBookmarkButton(post, currentUserId) {
@@ -90,5 +91,6 @@ function getBookmarkButton(post, currentUserId) {
     const icon = isBookmarked ? 'fas' : 'far';
     const handler = isBookmarked ? 'unbookmarkPost' : 'bookmarkPost';
     const bookmarkId = isBookmarked ? isBookmarked : '';
-    return `<button class="icon bookmark" data-bookmarked=${(isBookmarked) ? "true" : "false"} data-post-id="${post.id}" data-bookmark-id="${bookmarkId}" onclick="${handler}(event)"><i class="${icon} fa-bookmark fa-lg"></i></button>`;
+    const ariaLabel = isBookmarked ? 'Unbookmark' : 'Bookmark';
+    return `<button class="icon bookmark" data-bookmarked=${(isBookmarked) ? "true" : "false"} data-post-id="${post.id}" data-bookmark-id="${bookmarkId}" onclick="${handler}(event)" aria-label="${ariaLabel}"><i class="${icon} fa-bookmark fa-lg"></i></button>`;
 }
