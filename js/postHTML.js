@@ -1,4 +1,5 @@
 export function postToHTML(post) {
+    const currentUserId = document.querySelector('.current-username').getAttribute('data-current-user-id');
     return `
         <div id="post_${post.id}"class="post" data-post-id="${post.id}">
             <header>
@@ -8,7 +9,7 @@ export function postToHTML(post) {
             <img class="main image" src="${post.image_url}" alt="${post.alt_text}">
             <div class="interactions">
                 <div class="like-share">
-                    <button class="icon"><i class="far fa-heart fa-lg"></i></button>
+                    ${getLikeButton(post, currentUserId)}
                     <button class="icon"><i class="far fa-comment fa-lg"></i></button>
                     <button class="icon"><i class="far fa-paper-plane fa-lg"></i></button>
                 </div>
@@ -71,4 +72,14 @@ function getMoreCommentsButtonHTML(post) {
             ? `<button class="show-comments" data-post-id="${post.id}">Show all ${numComments} comments...</button>`
             : '';
     return html;
+}
+
+function getLikeButton(post, currentUserId) {
+    const isLiked = post.likes.find(
+        (like) => like.user_id == currentUserId
+    );
+    const icon = isLiked ? 'fas' : 'far';
+    const handler = isLiked ? 'unlikePost' : 'likePost';
+    const likeId = isLiked ? isLiked.id : '';
+    return `<button class="icon like" data-liked=${(isLiked) ? "true" : "false"} data-post-id="${post.id}" data-like-id="${likeId}" onclick="${handler}(event)"><i class="${icon} fa-heart fa-lg"></i></button>`;
 }

@@ -1,15 +1,8 @@
-import { getDataFromEndpointAsJSON } from './utilities.js';
+import { getDataFromEndpointAsJSON, currentUserData, postLikeToEndpoint, deleteLikeFromEndpoint } from './utilities.js';
 import { storyToHTML } from './storyHTML.js';
 import { postToHTML } from './postHTML.js';
 import { suggestionToHTML } from './suggestionHTML.js';
 import { modalPostToHTML } from './modalHTML.js';
-
-const currentUserData = await getCurrentUserData();
-
-async function getCurrentUserData() {
-    const endpoint = `/api/profile`;
-    return await getDataFromEndpointAsJSON(endpoint);
-}
 
 async function initPage() {
     initNavBar();
@@ -23,10 +16,18 @@ function initNavBar() {
 }
 
 function displayCurrentUserInNavBar() {
-    const html = `${currentUserData.username}`;
+    const html = getNavbarHTML();
     document
-        .querySelector('.current-username')
+        .querySelector('nav')
         .insertAdjacentHTML('beforeend', html);
+}
+
+function getNavbarHTML() {
+    return `<h1 id="nav-logo"><a href="index.html">Photo App</a></h1>
+            <div>
+                <p data-current-user-id="${currentUserData.id}" class="current-username">${currentUserData.username}</p>
+                <button class="sign-out">Sign out</button>
+            </div>`;
 }
 
 async function initStoriesPanel() {
@@ -135,6 +136,35 @@ window.hideModal = () => {
     modalBackground.classList = 'hidden';
     modalBackground.setAttribute('aria-hidden', 'true');
 };
+
+window.likePost = async (event) => {
+    const postId = event.currentTarget.getAttribute('data-post-id');
+    const endpoint = `/api/posts/likes`;
+    const body = { post_id: postId };
+    const data = await postLikeToEndpoint(endpoint, body);
+    console.log(data);
+    redrawPost(postId);
+};
+
+window.unlikePost = async (event) => {
+    const likeId = event.currentTarget.getAttribute('data-like-id');
+    const postId = event.currentTarget.getAttribute('data-post-id');
+    const endpoint = `/api/posts/likes/${likeId}`;
+    const data = await deleteLikeFromEndpoint(endpoint);
+    console.log(data);
+    redrawPost(postId);
+};
+
+async function redrawPost(postId) {
+    const postData = await getSinglePostJSON(postId);
+    const postHTML = postToHTML(postData);
+    document.querySelector(`#post_${postId}`).innerHTML = postHTML;
+}
+
+async function getSinglePostJSON(postId) {
+    const endpoint = `/api/posts/${postId}`;
+    return await getDataFromEndpointAsJSON(endpoint);
+}
 
 document.addEventListener(
     'focus',

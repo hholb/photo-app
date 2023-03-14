@@ -10,6 +10,7 @@
 
 const rootURL = 'https://photo-app-secured.herokuapp.com';
 const token = await getAccessToken(rootURL, 'hayden', 'hayden_password');
+export const currentUserData = await getCurrentUserData();
 
 async function getAccessToken(rootURL, username, password) {
     const postData = {
@@ -40,6 +41,42 @@ export async function getDataFromEndpointAsJSON(endpoint) {
 
     const response = await fetch(url, headers);
 
+    const data = await response.json();
+    return data;
+}
+
+async function getCurrentUserData() {
+    const endpoint = `/api/profile`;
+    return await getDataFromEndpointAsJSON(endpoint);
+}
+
+export async function postLikeToEndpoint(endpoint, body) {
+    const url = `${rootURL}${endpoint}`;
+
+    const headers = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(body),
+    };
+    const response = await fetch(url, headers);
+    const data = await response.json();
+    return data;
+}
+
+export async function deleteLikeFromEndpoint(endpoint) {
+    const url = `${rootURL}${endpoint}`;
+
+    const headers = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+    };
+    const response = await fetch(url, headers);
     const data = await response.json();
     return data;
 }
