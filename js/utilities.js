@@ -80,3 +80,33 @@ export async function deleteLikeFromEndpoint(endpoint) {
     const data = await response.json();
     return data;
 }
+
+export async function postBookmarkToEndpoint(endpoint, body) {
+    const url = `${rootURL}${endpoint}`;
+    const headers = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(body),
+    };
+    const response = await fetch(url, headers);
+    const data = await response.json();
+    return data;
+}
+
+export async function deleteBookmarkFromEndpoint(endpoint) {
+    const url = `${rootURL}${endpoint}`;
+
+    const headers = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+    };
+    const response = await fetch(url, headers);
+    const data = await response.json();
+    return data;
+}

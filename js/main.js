@@ -1,4 +1,4 @@
-import { getDataFromEndpointAsJSON, currentUserData, postLikeToEndpoint, deleteLikeFromEndpoint } from './utilities.js';
+import { getDataFromEndpointAsJSON, currentUserData, postLikeToEndpoint, deleteLikeFromEndpoint, postBookmarkToEndpoint, deleteBookmarkFromEndpoint } from './utilities.js';
 import { storyToHTML } from './storyHTML.js';
 import { postToHTML } from './postHTML.js';
 import { suggestionToHTML } from './suggestionHTML.js';
@@ -165,6 +165,24 @@ async function getSinglePostJSON(postId) {
     const endpoint = `/api/posts/${postId}`;
     return await getDataFromEndpointAsJSON(endpoint);
 }
+
+window.bookmarkPost = async (event) => {
+    const postId = event.currentTarget.getAttribute('data-post-id');
+    const endpoint = `/api/bookmarks`;
+    const body = { post_id: postId };
+    const data = await postBookmarkToEndpoint(endpoint, body);
+    redrawPost(postId);
+    console.log(data);
+};
+
+window.unbookmarkPost = async (event) => {
+    const postId = event.currentTarget.getAttribute('data-post-id');
+    const bookmarkId = event.currentTarget.getAttribute('data-bookmark-id');
+    const endpoint = `/api/bookmarks/${bookmarkId}`;
+    const data = await deleteBookmarkFromEndpoint(endpoint);
+    redrawPost(postId);
+    console.log(data);
+};
 
 document.addEventListener(
     'focus',

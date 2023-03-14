@@ -14,7 +14,7 @@ export function postToHTML(post) {
                     <button class="icon"><i class="far fa-paper-plane fa-lg"></i></button>
                 </div>
                 <div class="bookmark">
-                    <button class="icon"><i class="far fa-bookmark fa-lg"></i></button>
+                    ${getBookmarkButton(post, currentUserId)}
                 </div>
             </div>
             <div class="likes">
@@ -82,4 +82,13 @@ function getLikeButton(post, currentUserId) {
     const handler = isLiked ? 'unlikePost' : 'likePost';
     const likeId = isLiked ? isLiked.id : '';
     return `<button class="icon like" data-liked=${(isLiked) ? "true" : "false"} data-post-id="${post.id}" data-like-id="${likeId}" onclick="${handler}(event)"><i class="${icon} fa-heart fa-lg"></i></button>`;
+}
+
+function getBookmarkButton(post, currentUserId) {
+    console.log(post);
+    const isBookmarked = post.current_user_bookmark_id;
+    const icon = isBookmarked ? 'fas' : 'far';
+    const handler = isBookmarked ? 'unbookmarkPost' : 'bookmarkPost';
+    const bookmarkId = isBookmarked ? isBookmarked : '';
+    return `<button class="icon bookmark" data-bookmarked=${(isBookmarked) ? "true" : "false"} data-post-id="${post.id}" data-bookmark-id="${bookmarkId}" onclick="${handler}(event)"><i class="${icon} fa-bookmark fa-lg"></i></button>`;
 }
