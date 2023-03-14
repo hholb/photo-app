@@ -1,4 +1,14 @@
-import { getDataFromEndpointAsJSON, currentUserData, postLikeToEndpoint, deleteLikeFromEndpoint, postBookmarkToEndpoint, deleteBookmarkFromEndpoint } from './utilities.js';
+import {
+    getDataFromEndpointAsJSON,
+    currentUserData,
+    postLikeToEndpoint,
+    deleteLikeFromEndpoint,
+    postBookmarkToEndpoint,
+    deleteBookmarkFromEndpoint,
+    followAccount,
+    unfollowAccount,
+    postCommentToEndpoint,
+} from './utilities.js';
 import { storyToHTML } from './storyHTML.js';
 import { postToHTML } from './postHTML.js';
 import { suggestionToHTML } from './suggestionHTML.js';
@@ -17,9 +27,7 @@ function initNavBar() {
 
 function displayCurrentUserInNavBar() {
     const html = getNavbarHTML();
-    document
-        .querySelector('nav')
-        .insertAdjacentHTML('beforeend', html);
+    document.querySelector('nav').insertAdjacentHTML('beforeend', html);
 }
 
 function getNavbarHTML() {
@@ -142,7 +150,6 @@ window.likePost = async (event) => {
     const endpoint = `/api/posts/likes`;
     const body = { post_id: postId };
     const data = await postLikeToEndpoint(endpoint, body);
-    console.log(data);
     redrawPost(postId);
 };
 
@@ -151,7 +158,6 @@ window.unlikePost = async (event) => {
     const postId = event.currentTarget.getAttribute('data-post-id');
     const endpoint = `/api/posts/likes/${likeId}`;
     const data = await deleteLikeFromEndpoint(endpoint);
-    console.log(data);
     redrawPost(postId);
 };
 
@@ -172,7 +178,6 @@ window.bookmarkPost = async (event) => {
     const body = { post_id: postId };
     const data = await postBookmarkToEndpoint(endpoint, body);
     redrawPost(postId);
-    console.log(data);
 };
 
 window.unbookmarkPost = async (event) => {
@@ -181,7 +186,32 @@ window.unbookmarkPost = async (event) => {
     const endpoint = `/api/bookmarks/${bookmarkId}`;
     const data = await deleteBookmarkFromEndpoint(endpoint);
     redrawPost(postId);
-    console.log(data);
+};
+
+window.follow = async (event) => {
+    const userId = event.currentTarget.getAttribute('data-user-id');
+    const endpoint = `/api/following`;
+    const body = { user_id: userId };
+    const data = await followAccount(endpoint, body);
+    redrawSuggestion();
+};
+
+window.unfollow = async (event) => {
+    const userId = event.currentTarget.getAttribute('data-user-id');
+    const endpoint = `/api/following/${userId}`;
+    const data = await unfollowAccount(endpoint);
+    redrawSuggestion();
+};
+
+function redrawSuggestion() {}
+
+window.postComment = async (event) => {
+    const postId = event.currentTarget.getAttribute('data-post-id');
+    const comment = document.querySelector(`#comment_${postId}`).value;
+    const endpoint = `/api/comments`;
+    const body = { post_id: postId, text: comment };
+    const data = await postCommentToEndpoint(endpoint, body);
+    redrawPost(postId);
 };
 
 document.addEventListener(

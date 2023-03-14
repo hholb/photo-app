@@ -38,9 +38,9 @@ export function postToHTML(post) {
                 <div class="add-comment-area">
                     <div class="write-comment">
                         <button class="icon emoji"><i class="far fa-grin fa-lg"></i></button>
-                        <input class="comment-input" type="text" placeholder="Add a comment..." title="Add a comment">
+                        <input id="comment_${post.id}" class="comment-input" type="text" placeholder="Add a comment..." title="Add a comment">
                     </div>
-                    <button class="post-comment">Post</button>
+                    <button class="post-comment" data-post-id=${post.id} onclick="postComment(event)">Post</button>
                 </div>
                 </div>
             </div>
